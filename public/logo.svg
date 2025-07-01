@@ -1,3 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20">
-  <text x="0" y="15" font-size="15" fill="currentColor">Wsla</text>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.6.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 36 26" style="enable-background:new 0 0 36 26;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#39D2E0;}
+	.st1{fill:#39E09B;}
+</style>
+<g>
+	<path class="st0" d="M15.83,23c-1.31,2.61-5.03,2.61-6.35,0L1.02,6.2c-1.19-2.36,0.53-5.15,3.17-5.15l16.93,0
+		c2.65,0,4.36,2.79,3.17,5.15L15.83,23z"/>
+</g>
+<g>
+	<path class="st1" d="M26.58,22.96c-1.31,2.62-5.04,2.62-6.35,0l-8.4-16.76c-1.18-2.36,0.53-5.15,3.18-5.15l16.8,0
+		c2.64,0,4.36,2.78,3.18,5.15L26.58,22.96z"/>
+</g>
 </svg>
