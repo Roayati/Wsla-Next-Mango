@@ -1,8 +1,7 @@
 
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import LogoutButton from "@/components/buttons/LogoutButton";
-import {faLink} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import {getServerSession} from "next-auth";
 import Link from "next/link";
 
@@ -13,8 +12,8 @@ export default async function Header() {
       <div className="max-w-4xl flex justify-between mx-auto px-6">
         <div className="flex items-center gap-6">
           <Link href={'/'} className="flex items-center gap-2 text-blue-500">
-            <FontAwesomeIcon icon={faLink} className="text-blue-500" />
-            <span className="font-bold">LinkList</span>
+            <Image src="/logo.svg" alt="Wsla logo" width={24} height={24} />
+            <span className="font-bold">Wsla</span>
           </Link>
           <nav className="flex items-center gap-4 text-slate-500 text-sm">
             <Link href={'/about'}>About</Link>
