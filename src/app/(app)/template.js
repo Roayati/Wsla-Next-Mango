@@ -1,9 +1,8 @@
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import AppSidebar from "@/components/layout/AppSidebar";
-import {Page} from "@/models/Page";
+import supabase from "@/libs/supabaseClient";
 import {faBars, faLink} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 import {Lato} from 'next/font/google'
 import '../globals.css'
@@ -26,8 +25,11 @@ export default async function AppTemplate({ children, ...rest }) {
   if (!session) {
     return redirect('/');
   }
-  mongoose.connect(process.env.MONGO_URI);
-  const page = await Page.findOne({owner: session.user.email});
+  const { data: page } = await supabase
+    .from('pages')
+    .select()
+    .eq('owner', session.user.email)
+    .maybeSingle();
   return (
     <html lang="en">
     <body className={lato.className}>
@@ -67,3 +69,4 @@ export default async function AppTemplate({ children, ...rest }) {
     </html>
   )
 }
+

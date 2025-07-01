@@ -1,54 +1,48 @@
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import Chart from "@/components/Chart";
 import SectionBox from "@/components/layout/SectionBox";
-import {Event} from "@/models/Event";
-import {Page} from "@/models/Page";
+import supabase from "@/libs/supabaseClient";
 import {faLink} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {differenceInDays, formatISO9075, isToday} from "date-fns";
-import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 import {redirect} from "next/navigation";
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 
 
 export default async function AnalyticsPage() {
-  mongoose.connect(process.env.MONGO_URI);
   const session = await getServerSession(authOptions);
   if (!session) {
     return redirect('/');
   }
-  const page = await Page.findOne({owner: session.user.email});
+  const { data: page } = await supabase
+    .from('pages')
+    .select()
+    .eq('owner', session.user.email)
+    .maybeSingle();
 
-  const groupedViews = await Event.aggregate([
-    {
-      $match: {
-        type: 'view',
-        uri: page.uri,
-      }
-    },
-    {
-      $group: {
-        _id: {
-          $dateToString: {
-            date: "$createdAt",
-            format: "%Y-%m-%d"
-          },
-        },
-        count: {
-          "$count": {},
-        }
-      },
-    },
-    {
-      $sort: {_id: 1}
-    }
-  ]);
+  const { data: viewEvents } = await supabase
+    .from('events')
+    .select('created_at')
+    .eq('type', 'view')
+    .eq('uri', page.uri)
+    .order('created_at', { ascending: true });
 
-  const clicks = await Event.find({
-    page: page.uri,
-    type: 'click',
+  const groupedViewsMap = {};
+  viewEvents?.forEach(ev => {
+    const date = ev.created_at.split('T')[0];
+    groupedViewsMap[date] = (groupedViewsMap[date] || 0) + 1;
   });
+  const groupedViews = Object.keys(groupedViewsMap).sort().map(date => ({
+    _id: date,
+    count: groupedViewsMap[date],
+  }));
+
+  const { data: clicks } = await supabase
+    .from('events')
+    .select('*')
+    .eq('page', page.uri)
+    .eq('type', 'click');
 
   return (
     <div>
@@ -100,3 +94,4 @@ export default async function AnalyticsPage() {
     </div>
   );
 }
+

@@ -1,6 +1,4 @@
-import {Page} from "@/models/Page";
-import {User} from "@/models/User";
-import {Event} from "@/models/Event";
+import supabase from "@/libs/supabaseClient";
 import {
   faDiscord,
   faFacebook,
@@ -12,7 +10,6 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import {faEnvelope, faLink, faLocationDot, faMobile, faPhone} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import mongoose from "mongoose";
 import {btoa} from "next/dist/compiled/@edge-runtime/primitives";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,10 +39,19 @@ function buttonLink(key, value) {
 
 export default async function UserPage({params}) {
   const uri = params.uri;
-  mongoose.connect(process.env.MONGO_URI);
-  const page = await Page.findOne({uri});
-  const user = await User.findOne({email:page.owner});
-  await Event.create({uri:uri, page:uri, type:'view'});
+  const { data: page } = await supabase
+    .from('pages')
+    .select()
+    .eq('uri', uri)
+    .maybeSingle();
+  const { data: user } = await supabase
+    .from('users')
+    .select()
+    .eq('email', page.owner)
+    .maybeSingle();
+  await supabase
+    .from('events')
+    .insert({ uri, page: uri, type: 'view' });
   return (
     <div className="bg-blue-950 text-white min-h-screen">
       <div
