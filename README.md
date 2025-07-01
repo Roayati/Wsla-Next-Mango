@@ -4,12 +4,46 @@ This project is a [Next.js](https://nextjs.org/) application that stores data in
 
 ## Getting Started
 
-Install dependencies and run the development server:
+Follow these steps to run the project locally.
 
-```bash
-npm install
-npm run dev
-```
+1. **Clone the repository** and enter the project directory.
+
+   ```bash
+   git clone https://github.com/your-user/linklist.git
+   cd linklist
+   ```
+
+2. **Install dependencies** (Node.js 18 or later is recommended).
+
+   ```bash
+   npm install
+   ```
+
+3. **Create a `.env.local` file** in the project root and define the environment variables below:
+
+   ```bash
+   SUPABASE_URL=<your-supabase-url>
+   SUPABASE_SERVICE_ROLE_KEY=<your-service-role-key>
+   GOOGLE_CLIENT_ID=<your-google-client-id>
+   GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+   S3_ACCESS_KEY=<your-s3-access-key>
+   S3_SECRET_ACCESS_KEY=<your-s3-secret-access-key>
+   BUCKET_NAME=<your-bucket-name>
+   URL=http://localhost:3000
+   SECRET=<any-random-string>
+   ```
+
+   - `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` can be found in the **API** settings of your Supabase project.
+   - `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are obtained from OAuth credentials in the Google Cloud Console.
+   - `S3_ACCESS_KEY`, `S3_SECRET_ACCESS_KEY` and `BUCKET_NAME` come from an AWS account with S3 access.
+   - `URL` should match your Vercel deployment URL in production (use `http://localhost:3000` locally).
+   - `SECRET` is an arbitrary string used by NextAuth.
+
+4. **Start the development server**.
+
+   ```bash
+   npm run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
